@@ -1,0 +1,23 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+build/
+dist/
+
+# Generated data
+data/index/
+data/uploads/
+# Third-party PDFs we may not redistribute are fetched by scripts/download_docs.py
+data/docs/pico-datasheet.pdf
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
