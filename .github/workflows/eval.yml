@@ -44,8 +44,11 @@ jobs:
       - name: Check API key
         run: test -n "$ANTHROPIC_API_KEY" || { echo "ANTHROPIC_API_KEY secret is not set"; exit 1; }
 
+      # datasheets.raspberrypi.com answers urllib's request with 403, so fetch the datasheet with curl.
       - name: Download corpus
-        run: python scripts/download_docs.py
+        run: |
+          curl -sSfL -o data/docs/pico-datasheet.pdf https://datasheets.raspberrypi.com/pico/pico-datasheet.pdf
+          python scripts/download_docs.py
 
       - name: Build index
         run: python -m documind ingest

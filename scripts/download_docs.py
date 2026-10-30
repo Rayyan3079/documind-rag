@@ -9,6 +9,7 @@ Usage: python scripts/download_docs.py
 from __future__ import annotations
 
 import sys
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -21,14 +22,19 @@ DOCS = {
 
 def main(target: Path = Path("data/docs")) -> int:
     target.mkdir(parents=True, exist_ok=True)
+    failed = 0
     for name, url in DOCS.items():
         dest = target / name
         if dest.exists():
             print(f"exists  {dest}")
             continue
         print(f"fetch   {url}")
-        urllib.request.urlretrieve(url, dest)
-    return 0
+        try:
+            urllib.request.urlretrieve(url, dest)
+        except urllib.error.HTTPError as exc:
+            failed += 1
+            print(f"FAILED  {url} ({exc}). Download it manually (browser or curl) and save it as {dest}")
+    return 1 if failed else 0
 
 
 if __name__ == "__main__":
